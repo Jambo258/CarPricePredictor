@@ -1,43 +1,53 @@
+# Car price predictor project
+
+Fullstack application where user creates account to get access to car price predictor model which has been trained with Python.
+Application contains PostgreSQL database, ReactJS frontend, NodeJS backend and Flask backend. Users in the application do have
+basic CRUD operations to manage their account details in the database and admins have same CRUD operations without restrictions so they can edit any user details. Car price predictor is trained with decisiontree regressor algorithm and to get car price prediction user needs to give multiple inputs for the trained model (model was trained with dataset found in the kaggle).
+
 # How to run project locally
 
-to run only db in docker run following command
+to run only database in docker run following command:
+
 ````
 docker-compose -f docker-compose-db.yml up
 ````
 
-and init database on ./server by following command
+and seed database and start backend on ./server by following command:
+
 ````
+npm install
 npm run dev
 ````
 
-to start python flask without docker
+to start python flask backend (to get access to the predictor model endpoint) run following command:
 ````
 pip install -r requirements.txt
 python app.py
 ````
+# Running project locally in docker
 
-to run entire application in docker run following command
+to run entire application in docker run following command:
 ````
 docker compose up
 ````
 
 # Tests
 
-backend tests
+Backend tests
 
-make sure database is running in docker in the root folder run following command
+make sure database is running in the docker (if not) navigate into the root folder of project and run following command:
 
 ````
 docker-compose -f docker-compose-db.yml up
 ````
 
-in the ./flask-server folder run following command
+in the ./flask-server folder run following command:
 
 ````
 python app.py
 ````
 
-in the ./server folder run following command
+in the ./server folder run following command:
 
 ````
 npm run tests
