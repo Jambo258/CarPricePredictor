@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:15.2
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DB: postgres
+    volumes:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "pguser", "-d", "postgres", "-h", "localhost", "-p", "5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      PG_HOST: db
+      PG_PORT: 5432
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DB: postgres
+      DOCKER: true
+    restart: always
+    ports:
+      - 3001:3001
+    depends_on:
+      db:
+        condition: service_healthy
+  flask-api:
+    build:
+      context: ./flask-server
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - api
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 5173:5173
+    depends_on:
+      - api

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Index for the car price predictor endpoints</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="main">
+      <h1>Endpoints for the car price predictor</h1>
+      <div class="d-flex justify-content-center">
+        <div class="row">
+          <div class="col-12">
+            GET user/getallusers returns all users
+            <p>** requires admin</p>
+          </div>
+          <div class="col-12">
+            GET user/:id finds singular user details with ID
+            <p>** requires admin or user with same id</p>
+          </div>
+          <div class="col-12">
+            POST user/register registers new user to database
+          </div>
+          <div class="col-12">
+            POST user/login login as user which is created on registration
+          </div>
+          <div class="col-12">
+            PUT user/:id change user account details by ID
+            <p>** requires admin or user with same id</p>
+          </div>
+
+          <div class="col-12">
+            DELETE user/:id deletes user with ID
+            <p>** requires admin or user with same id</p>
+          </div>
+          <div class="col-12">
+            POST user/predict predicts car value based on attributes like km,
+            hp, make, year, fuel
+            <p>** requires account (user or admin)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script></script>
+  </body>
+</html>

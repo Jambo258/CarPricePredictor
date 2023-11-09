@@ -1,0 +1,15 @@
+.col-12 {
+  height: 50px;
+  background-color: greenyellow;
+  border: 1px solid grey;
+  margin: 2%;
+}
+.row {
+  width: 50%;
+}
+.main {
+  text-align: center;
+}
+p {
+  color: red;
+}
