@@ -19,7 +19,7 @@ npm install
 npm run dev
 ````
 
-to start python flask backend (to get access to the predictor model endpoint) run following command:
+to start python flask backend (to get access to the predictor model endpoint) run following command on ./flask-server:
 ````
 pip install -r requirements.txt
 python app.py
@@ -52,3 +52,10 @@ in the ./server folder run following command:
 ````
 npm run tests
 ````
+
+# Endpoints
+
+<div align="center">
+    <p>Endpoints</p>
+    <img src="/images/endpoints.png" width="600px"</img>
+</div>
