@@ -1,0 +1,11 @@
+.list-group-profile .list-group-item {
+  background-color: lightblue;
+  border: 0;
+}
+.errors {
+    color: red;
+}
+
+.inline-button {
+  margin-left: 1rem !important;
+}

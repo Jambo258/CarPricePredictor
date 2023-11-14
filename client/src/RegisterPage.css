@@ -1,0 +1,13 @@
+.errors {
+  color: red;
+}
+.form {
+  margin-top: 2%;
+  background-color: lightblue;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 105px;
+}
+.title {
+  font-size: 20px;
+}

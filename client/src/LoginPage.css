@@ -1,0 +1,13 @@
+.errors {
+  color: red;
+}
+.login-form {
+  margin-top: 2%;
+  background-color: lightblue;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 276px;
+}
+.login-title {
+    font-size: 20px;
+}

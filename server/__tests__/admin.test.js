@@ -58,6 +58,18 @@ describe("admin route", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.email).toEqual(changedUserData.email);
   });
+  it("/user/:id trying to change user email to one that already exists as admin", async () => {
+    const changedUserData = {
+      email: "newemail@gmail.com",
+    };
+    const response = await request(server)
+      .put(`/user/${user.id}`)
+      .set("Authorization", "Bearer " + adminToken)
+      .set("Accept", "application/json")
+      .send(changedUserData);
+    expect(response.statusCode).toBe(404);
+    expect(response.body.error).toEqual("Email exists");
+  });
   it("/user/:id deleting user as admin", async () => {
     const response = await request(server)
       .delete(`/user/${user.id}`)

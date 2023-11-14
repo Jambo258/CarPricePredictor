@@ -4,6 +4,7 @@ import server from "../index.js";
 import pg from "pg";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import argon2 from "argon2";
 dotenv.config();
 
 const pool = new pg.Pool({
@@ -165,6 +166,31 @@ describe("user route", () => {
       .delete(`/user/${dummyUserId}`)
       .set("Authorization", "Bearer " + normalUsertoken);
     expect(response.statusCode).toBe(401);
+  });
+
+  it("/user/:id changing own account details (same as user id)", async () => {
+    const changedTestUser = {
+      username: "testingdummy1",
+      email: "testingdummy1@gmail.com",
+      password: "testingdummy1",
+    };
+    const response = await request(server)
+      .put(`/user/${dummyUserId}`)
+      .set("Authorization", "Bearer " + dummyUserToken)
+      .set("Accept", "application/json")
+      .send(changedTestUser);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.username).toEqual(changedTestUser.username);
+    expect(response.body.email).toEqual(changedTestUser.email);
+    let password = await argon2.verify(response.body.password, changedTestUser.password);
+    expect(password).toEqual(true);
+  });
+  it("/user/:id deleting own user account (same as user id)", async () => {
+    const response = await request(server)
+      .delete(`/user/${dummyUserId}`)
+      .set("Authorization", "Bearer " + dummyUserToken);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toEqual(`deleted user ${dummyUserId}`);
   });
 
   it("/user/predict with missing values", async () => {
