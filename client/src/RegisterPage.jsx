@@ -6,8 +6,10 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./RegisterPage.css";
+import { useAuth } from "./Auth";
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const { setUserToken } = useAuth();
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
@@ -45,6 +47,7 @@ const RegisterPage = () => {
         formik.resetForm();
         navigate("/");
         console.log(values);
+        setUserToken(response.data.token);
       } catch (error) {
         console.log(error);
         formik.errors.retypePassword = error.response.data.error;

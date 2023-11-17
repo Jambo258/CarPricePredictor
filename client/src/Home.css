@@ -10,3 +10,11 @@
 .predict-title {
     font-size: 20px;
 }
+.main-container {
+  min-height: 83.7vh;
+  font-size: 30px;
+  text-align: center;
+}
+.prediction {
+  font-size: 20px;
+}

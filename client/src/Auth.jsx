@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import { createContext, useEffect, useMemo, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useCallback } from "react";
@@ -9,6 +9,7 @@ let logoutTimer;
 const AuthProvider = ( {children} ) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [role, setRole] = useState();
+  const [id, setId] = useState();
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
   const setUserToken = useCallback ((newToken, exp) => {
@@ -16,6 +17,7 @@ const AuthProvider = ( {children} ) => {
     console.log(decodedToken);
     setToken(newToken);
     setRole(decodedToken.role);
+    setId(decodedToken.id);
     const tokenExpirationDate =
     exp || new Date(new Date().getTime() + 1000 * 60 * 60);
     setTokenExpirationDate(tokenExpirationDate);
@@ -25,6 +27,7 @@ const AuthProvider = ( {children} ) => {
   const removeUserToken =  useCallback(() => {
     setToken(null);
     setRole(null);
+    setId(null);
     setTokenExpirationDate(null);
   }, []);
 
@@ -49,7 +52,7 @@ const AuthProvider = ( {children} ) => {
     if (token && tokenExpirationDate) {
       const decodedToken = jwtDecode(token);
       console.log(decodedToken)
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      // axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       localStorage.setItem("token", token);
       localStorage.setItem("exp", new Date(decodedToken.exp * 1000));
       // console.log(tokenExpirationDate)
@@ -58,7 +61,7 @@ const AuthProvider = ( {children} ) => {
       console.log(remainingTime)
       logoutTimer = setTimeout(removeUserToken, remainingTime);
     } else {
-      delete axios.defaults.headers.common["Authorization"];
+      // delete axios.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
       localStorage.removeItem("exp");
       clearTimeout(logoutTimer);
@@ -70,10 +73,11 @@ const AuthProvider = ( {children} ) => {
       token,
       role,
       tokenExpirationDate,
+      id,
       setUserToken,
       removeUserToken
     }),
-    [token, role, tokenExpirationDate, removeUserToken, setUserToken]
+    [token, role, tokenExpirationDate, id, removeUserToken, setUserToken]
   );
 
   return (

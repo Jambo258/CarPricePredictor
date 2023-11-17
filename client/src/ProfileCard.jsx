@@ -8,11 +8,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Form from "react-bootstrap/Form";
 import ModalComponent from "./ModalComponent";
+import axios from "axios";
+import { useAuth } from "./Auth";
 
-const ProfileCard = () => {
+const ProfileCard = (props) => {
   const [username, setUsername] = useState(false);
   const [email, setEmail] = useState(false);
   const [password, setPassword] = useState(false);
+  const { token, role } = useAuth();
 
   const validationSchemaUsername = Yup.object().shape({
     username: Yup.string().required("Username is required"),
@@ -38,10 +41,42 @@ const ProfileCard = () => {
       username: "",
     },
     validationSchema: validationSchemaUsername,
-    onSubmit: (values) => {
-      formikUsername.resetForm();
-      setUsername(false);
-      console.log(values);
+    onSubmit: async (values) => {
+      const modifiedUser = {
+        username: values.username,
+      };
+      try {
+        const response = await axios.put(
+          `http://localhost:3001/user/${props.user.id}`,
+          modifiedUser,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        console.log(response.data);
+        formikUsername.resetForm();
+        setUsername(false);
+        console.log(values);
+        if (role === "admin") {
+          props.setUsers((prev) =>
+            prev.map((element) => {
+              if (element.id === props.user.id) {
+                return { ...element, username: response.data.username };
+              }
+              return element;
+            })
+          );
+        } else if (role === "user") {
+          props.setUser((prev) => ({
+            ...prev,
+            username: response.data.username,
+          }));
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
   const formikEmail = useFormik({
@@ -49,10 +84,43 @@ const ProfileCard = () => {
       email: "",
     },
     validationSchema: validationSchemaEmail,
-    onSubmit: (values) => {
-      formikEmail.resetForm();
-      setEmail(false);
-      console.log(values);
+    onSubmit: async (values) => {
+      const modifiedUser = {
+        email: values.email,
+      };
+      try {
+        const response = await axios.put(
+          `http://localhost:3001/user/${props.user.id}`,
+          modifiedUser,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        console.log(response.data);
+        formikEmail.resetForm();
+        setEmail(false);
+        console.log(values);
+        if (role === "admin") {
+          props.setUsers((prev) =>
+            prev.map((element) => {
+              if (element.id === props.user.id) {
+                return { ...element, email: response.data.email };
+              }
+              return element;
+            })
+          );
+        } else if (role === "user") {
+          props.setUser((prev) => ({
+            ...prev,
+            email: response.data.email,
+          }));
+        }
+      } catch (error) {
+        console.log(error);
+        formikEmail.errors.email = error.response.data.error;
+      }
     },
   });
   const formikPassword = useFormik({
@@ -61,10 +129,42 @@ const ProfileCard = () => {
       retypePassword: "",
     },
     validationSchema: validationSchemaPassword,
-    onSubmit: (values) => {
-      formikPassword.resetForm();
-      setPassword(false);
-      console.log(values);
+    onSubmit: async (values) => {
+      const modifiedUser = {
+        password: values.password,
+      };
+      try {
+        const response = await axios.put(
+          `http://localhost:3001/user/${props.user.id}`,
+          modifiedUser,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        console.log(response.data);
+        formikPassword.resetForm();
+        setPassword(false);
+        console.log(values);
+        if (role === "admin") {
+          props.setUsers((prev) =>
+            prev.map((element) => {
+              if (element.id === props.user.id) {
+                return { ...element, password: response.data.password };
+              }
+              return element;
+            })
+          );
+        } else if (role === "user") {
+          props.setUser((prev) => ({
+            ...prev,
+            password: response.data.password,
+          }));
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
   return (
@@ -81,17 +181,20 @@ const ProfileCard = () => {
       <Card.Body>
         <Card.Title style={{ marginBottom: "15%" }}>
           Profile Card
-          <ModalComponent />
+          <ModalComponent id={props.user.id} setUsers={props.setUsers} />
         </Card.Title>
-        <Card.Text>Username: aaaaaaaaaa </Card.Text>
-        <Card.Text>Email: aaaaaaaaaaa</Card.Text>
-        <Card.Text>Password: aaaaaaaaaaa</Card.Text>
+        <Card.Text>Username: {props.user.username}</Card.Text>
+        <Card.Text>Email: {props.user.email}</Card.Text>
+        <Card.Text>Password: {props.user.password}</Card.Text>
+        <Card.Text>Role: {props.user.role}</Card.Text>
         <ListGroup className="list-group list-group-profile">
           <ListGroup.Item>
             <Button
               variant="primary"
               onClick={() => {
                 setUsername(!username);
+                setEmail(false);
+                setPassword(false);
                 formikUsername.resetForm();
               }}
             >
@@ -140,6 +243,8 @@ const ProfileCard = () => {
               variant="primary"
               onClick={() => {
                 setEmail(!email);
+                setUsername(false);
+                setPassword(false);
                 formikEmail.resetForm();
               }}
             >
@@ -187,6 +292,8 @@ const ProfileCard = () => {
               variant="primary"
               onClick={() => {
                 setPassword(!password);
+                setUsername(false);
+                setEmail(false);
                 formikPassword.resetForm();
               }}
             >

@@ -188,8 +188,9 @@ usersRouter.post(
       gear: gear,
       offerType: offerType,
       hp: hp,
-      year: year,
+      year: new Date().getFullYear() - year,
     };
+    console.log(predictCar)
     try {
       const connection = process.env.DOCKER
         ? "http://flask-api:80/predict"
@@ -200,7 +201,11 @@ usersRouter.post(
       );
 
       // console.log(response.data);
-
+        if(response.data.error){
+          return res
+            .status(400)
+            .json({ error: response.data.error });
+        }
       res.json(response.data);
     } catch (error) {
       console.log(error);

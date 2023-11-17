@@ -24,6 +24,12 @@ to start python flask backend (to get access to the predictor model endpoint) ru
 pip install -r requirements.txt
 python app.py
 ````
+
+to start frontend run following command on ./client
+````
+npm install
+npm run dev
+````
 # Running project locally in docker
 
 to run entire application in docker run following command:
@@ -56,6 +62,5 @@ npm run tests
 # Endpoints
 
 <div align="center">
-    <p>Endpoints</p>
     <img src="/images/endpoints.png" width="600px"</img>
 </div>

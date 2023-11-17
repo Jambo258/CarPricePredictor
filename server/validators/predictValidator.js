@@ -5,8 +5,8 @@ const predictValidator = () => {
     body("kilometer")
       .notEmpty()
       .withMessage("kilometer value cant be empty")
-      .isInt()
-      .withMessage("kilometer value must be integer"),
+      .isInt({min: 0})
+      .withMessage("kilometer value must be integer and min value 0"),
     body("make")
       .notEmpty()
       .withMessage("make value cant be empty")
@@ -49,20 +49,18 @@ const predictValidator = () => {
       .withMessage("offerType value cant be empty")
       .isString()
       .withMessage("offerType value must be string")
-      .isIn([
-        "Used",
-        "New",
-      ]).withMessage("offerType must be Used or New"),
+      .isIn(["Used", "New"])
+      .withMessage("offerType must be Used or New"),
     body("hp")
       .notEmpty()
       .withMessage("hp value cant be empty")
-      .isFloat()
-      .withMessage("hp value must be float"),
+      .isFloat({min:1})
+      .withMessage("hp value must be float and min hp values is 1"),
     body("year")
       .notEmpty()
       .withMessage("year value cant be empty")
-      .isInt()
-      .withMessage("year value must be integer"),
+      .isInt({ min: 1900, max: 2023 })
+      .withMessage("year value must be integer and min value is 1900 and max value is 2023"),
     (req, res, next) => {
       const errors = validationResult(req);
       if (errors.isEmpty()) {

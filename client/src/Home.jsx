@@ -3,31 +3,75 @@ import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useFormik } from "formik";
+import Dropdown from "react-bootstrap/Dropdown";
 import * as Yup from "yup";
 import axios from "axios";
 import "./Home.css";
 import { useAuth } from "./Auth";
+import { useState } from "react";
+import Cars from "./file1.json";
 const Home = () => {
-  const { token} = useAuth();
+  const { token } = useAuth();
+  const [prediction, setPrediction] = useState();
+  const [fuelType, setFuelType] = useState("Select fuelType");
+  const [gearType, setGearType] = useState("Select gearType");
+  const [offerType, setOfferType] = useState("Select offerType");
+  const [make, setMake] = useState("Select Manufactorer");
+  const [model, setModel] = useState([]);
+  const [selectedModel, setSelectedModel] = useState("Select Model");
+  const fuelTypes = [
+    "Diesel",
+    "Gasoline",
+    "Electric",
+    "Electric/Gasoline",
+    "Electric/Diesel",
+    "Hydrogen",
+    "Ethanol",
+  ];
+  const manufactorers = Object.keys(Cars);
+
+  const gearTypes = ["Manual", "Automatic", "Semi-automatic"];
+  const offerTypes = ["Used", "New"];
+
+  const handleMake = (item) => {
+    setMake(item);
+    setModel(Cars[item].model);
+    formik.values.make = item;
+  };
+
+  const handleModel = (item) => {
+    setSelectedModel(item);
+    formik.values.model = item;
+  };
+
+  const handleFuelType = (item) => {
+    setFuelType(item);
+    formik.values.fuel = item;
+  };
+  const handlegearType = (item) => {
+    setGearType(item);
+    formik.values.gear = item;
+  };
+  const handleofferType = (item) => {
+    setOfferType(item);
+    formik.values.offerType = item;
+  };
 
   const validationSchema = Yup.object().shape({
-    kilometer: Yup.number().min(0,"Kilometer must be positive").required("Kilometer is required"),
-    make: Yup.string()
-      .required("Manufactorer is required"),
-    model: Yup.string()
-      .required("Model is required"),
-    fuel: Yup.string()
-      .required("fuelType is required"),
-    gear: Yup.string()
-      .required("Transmission is required"),
-    offerType: Yup.string()
-      .required("OfferType is required"),
+    kilometer: Yup.number()
+      .min(0, "Kilometer must be positive")
+      .required("Kilometer is required"),
+    make: Yup.string().required("Manufactorer is required"),
+    model: Yup.string().required("Model is required"),
+    fuel: Yup.string().required("fuelType is required"),
+    gear: Yup.string().required("Transmission is required"),
+    offerType: Yup.string().required("OfferType is required"),
     horsePower: Yup.number()
-      .min(0, "Horsepower must be positive")
+      .min(1, "Horsepower must be positive")
       .required("Horsepower is required"),
     year: Yup.number()
       .min(1900, "Cars were invented in the 1900's")
-      .max(2023,"Cannot set car year it was made in the future")
+      .max(2023, "Cannot set car year it was made in the future")
       .required("Year is required"),
   });
 
@@ -39,8 +83,8 @@ const Home = () => {
       fuel: "",
       gear: "",
       offerType: "",
-      horsePower: 0,
-      year: 1900
+      horsePower: 100,
+      year: 2010,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -52,21 +96,43 @@ const Home = () => {
         gear: values.gear,
         offerType: values.offerType,
         hp: values.horsePower,
-        year: values.year
+        year: values.year,
       };
+      console.log(carDetails);
       try {
         const response = await axios.post(
           `http://localhost:3001/user/predict`,
-          carDetails
+          carDetails,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
         console.log(response.data);
+        console.log(formik.values);
         formik.resetForm();
+        console.log(formik.values)
         console.log(values);
+        setFuelType("Select fuelType");
+        setGearType("Select gearType");
+        setOfferType("Select offerType");
+        setMake("Select Manufactorer");
+        setSelectedModel("Select Model");
+        setModel([]);
+        formik.setFieldValue("make", "");
+        formik.setFieldValue("model", "");
+        formik.setFieldValue("fuel", "");
+        formik.setFieldValue("gear", "");
+        formik.setFieldValue("offerType", "");
+        setPrediction(response.data.price_prediction);
       } catch (error) {
         console.log(error);
+        formik.errors.year = error.response.data.error;
       }
     },
   });
+  console.log(formik.values.model);
   return (
     <>
       {token ? (
@@ -94,66 +160,128 @@ const Home = () => {
               ) : null}
             </Form.Group>
             <Form.Group className="" controlId="formMake">
-              <Form.Label>Enter manufactorer</Form.Label>
-              <Form.Control
-                name="make"
-                onChange={formik.handleChange}
-                value={formik.values.make}
-                type="text"
-                placeholder="Manufactorer"
-              />
+              <Form.Label>Select manufactorer</Form.Label>
+              <Dropdown>
+                <Dropdown.Toggle variant="secondary">{make}</Dropdown.Toggle>
+                <Dropdown.Menu
+                  style={{
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                    width: "160px",
+                  }}
+                >
+                  {manufactorers.map((item, index) => (
+                    <Dropdown.Item key={index} onClick={() => handleMake(item)}>
+                      {item}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
               {formik.touched.make && formik.errors.make ? (
                 <div className="errors">{formik.errors.make}</div>
               ) : null}
             </Form.Group>
-            <Form.Group className="" controlId="formModel">
-              <Form.Label>Enter Car model</Form.Label>
-              <Form.Control
-                name="model"
-                onChange={formik.handleChange}
-                value={formik.values.model}
-                type="text"
-                placeholder="Model"
-              />
+            <Form.Group className="mb-3" controlId="formModel">
+              <Form.Label>Select Car model</Form.Label>
+
+              <Dropdown>
+                <Dropdown.Toggle variant="secondary">
+                  {selectedModel}
+                </Dropdown.Toggle>
+                <Dropdown.Menu
+                  style={{
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                  }}
+                >
+                  {model.map((item, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      onClick={() => handleModel(item)}
+                    >
+                      {item}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
               {formik.touched.model && formik.errors.model ? (
                 <div className="errors">{formik.errors.model}</div>
               ) : null}
             </Form.Group>
-            <Form.Group className="" controlId="formFuel">
-              <Form.Label>Enter fueltype</Form.Label>
-              <Form.Control
-                name="fuel"
-                onChange={formik.handleChange}
-                value={formik.values.fuel}
-                type="text"
-                placeholder="Fueltype"
-              />
+            <Form.Group className="mb-3" controlId="formFuel">
+              <Form.Label>Select Fuel type</Form.Label>
+              <Dropdown>
+                <Dropdown.Toggle variant="secondary">
+                  {fuelType}
+                </Dropdown.Toggle>
+                <Dropdown.Menu
+                  style={{
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                  }}
+                >
+                  {fuelTypes.map((item, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      onClick={() => handleFuelType(item)}
+                    >
+                      {item}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
               {formik.touched.fuel && formik.errors.fuel ? (
                 <div className="errors">{formik.errors.fuel}</div>
               ) : null}
             </Form.Group>
-            <Form.Group className="" controlId="formGear">
-              <Form.Label>Enter transmission type</Form.Label>
-              <Form.Control
-                name="gear"
-                onChange={formik.handleChange}
-                value={formik.values.gear}
-                type="text"
-                placeholder="Transmission"
-              />
+            <Form.Group className="mb-3" controlId="formGear">
+              <Form.Label>Select Transmission type</Form.Label>
+              <Dropdown>
+                <Dropdown.Toggle variant="secondary">
+                  {gearType}
+                </Dropdown.Toggle>
+                <Dropdown.Menu
+                  style={{
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                  }}
+                >
+                  {gearTypes.map((item, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      onClick={() => handlegearType(item)}
+                    >
+                      {item}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
               {formik.touched.gear && formik.errors.gear ? (
                 <div className="errors">{formik.errors.gear}</div>
               ) : null}
             </Form.Group>
-            <Form.Group className="" controlId="formOfferType">
-              <Form.Label>Enter offerType</Form.Label>
-              <Form.Control
-                name="offerType"
-                onChange={formik.handleChange}
-                value={formik.values.offerType}
-                type="text"
-                placeholder="offerType"
-              />
+            <Form.Group className="mb-3" controlId="formOfferType">
+              <Form.Label>Select Offertype</Form.Label>
+              <Dropdown>
+                <Dropdown.Toggle variant="secondary">
+                  {offerType}
+                </Dropdown.Toggle>
+                <Dropdown.Menu
+                  style={{
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                  }}
+                >
+                  {offerTypes.map((item, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      onClick={() => handleofferType(item)}
+                    >
+                      {item}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
               {formik.touched.offerType && formik.errors.offerType ? (
                 <div className="errors">{formik.errors.offerType}</div>
               ) : null}
@@ -188,8 +316,18 @@ const Home = () => {
               Submit
             </Button>
           </Form>
+          {prediction ? (
+            <Container className="prediction">
+              Price prediction: {prediction} €{" "}
+            </Container>
+          ) : null}
         </Container>
-      ) : (<Container>You need to Log in to use car price predictor</Container>)}
+      ) : (
+        <Container className="main-container">
+          <Container>Welcome to Car price predictor application</Container>
+          <Container>You need to Login to use car price predictor</Container>
+        </Container>
+      )}
     </>
   );
 };
