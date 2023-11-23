@@ -28,7 +28,7 @@ const ProfileCard = (props) => {
     }
     try {
         const response = await axios.put(
-          `http://localhost:3001/user/${props.user.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/${props.user.id}`,
           userRole,
           {
             headers: {
@@ -82,7 +82,7 @@ const ProfileCard = (props) => {
       };
       try {
         const response = await axios.put(
-          `http://localhost:3001/user/${props.user.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/${props.user.id}`,
           modifiedUser,
           {
             headers: {
@@ -125,7 +125,7 @@ const ProfileCard = (props) => {
       };
       try {
         const response = await axios.put(
-          `http://localhost:3001/user/${props.user.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/${props.user.id}`,
           modifiedUser,
           {
             headers: {
@@ -170,7 +170,7 @@ const ProfileCard = (props) => {
       };
       try {
         const response = await axios.put(
-          `http://localhost:3001/user/${props.user.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/${props.user.id}`,
           modifiedUser,
           {
             headers: {

@@ -5,13 +5,23 @@ dotenv.config();
 const { PG_HOST, PG_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } =
   process.env;
 
-const pool = new pg.Pool({
+const prodPool = {
+  connectionString: process.env.CONNECTION_STRING,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+};
+const devPool = {
   host: PG_HOST,
   port: PG_PORT,
   user: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
-});
+};
+
+const pool = new pg.Pool(
+  process.env.NODE_ENV === "production" ? prodPool : devPool
+);
 
 const executeQuery = async (query, params) => {
   const client = await pool.connect();

@@ -13,7 +13,7 @@ const ModalComponent = (props) => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:3001/user/${props.id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/user/${props.id}`,
         {
           headers: {
             Authorization: "Bearer " + token,

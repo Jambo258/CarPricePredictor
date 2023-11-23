@@ -33,7 +33,7 @@ const LoginPage = () => {
       };
       try {
         const response = await axios.post(
-          `http://localhost:3001/user/login`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/login`,
           loginUser
         );
         // console.log(response.data);

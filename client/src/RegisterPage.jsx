@@ -40,7 +40,7 @@ const RegisterPage = () => {
       };
       try {
         const response = await axios.post(
-          `http://localhost:3001/user/register`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/register`,
           newUser
         );
         // console.log(response.data);

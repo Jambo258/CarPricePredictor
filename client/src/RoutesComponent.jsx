@@ -22,7 +22,7 @@ const RoutesComponent = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/user/getallusers`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/getallusers`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -39,7 +39,7 @@ const RoutesComponent = () => {
     const fetchSingularUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/user/${id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/${id}`,
           {
             headers: {
               Authorization: "Bearer " + token,

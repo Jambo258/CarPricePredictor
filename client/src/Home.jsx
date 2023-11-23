@@ -107,7 +107,7 @@ const Home = () => {
       console.log(carDetails);
       try {
         const response = await axios.post(
-          `http://localhost:3001/user/predict`,
+          `${import.meta.env.VITE_BACKEND_URL}/user/predict`,
           carDetails,
           {
             headers: {
