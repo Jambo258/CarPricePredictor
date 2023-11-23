@@ -195,9 +195,17 @@ usersRouter.post(
     };
     console.log(predictCar)
     try {
-      const connection = process.env.DOCKER
-        ? "http://flask-api:80/predict"
-        : "http://localhost:80/predict";
+      let connection;
+      if(process.env.DOCKER){
+        connection = "http://flask-api:80/predict";
+      } else if(process.env.DEPLOY){
+        connection = "https://car-project-flask-api.onrender.com/predict";
+      } else {
+        connection = "http://localhost:80/predict";
+      }
+      // const connection = process.env.DOCKER
+      //   ? "http://flask-api:80/predict"
+      //   : "http://localhost:80/predict";
       const response = await axios.post(
         connection,
         predictCar
