@@ -1,13 +1,12 @@
 .main {
-  background-color: aquamarine;
   display: grid;
   grid-template-columns: 1fr;
   justify-content: center;
   text-align: center;
-/*
-  margin-bottom: 60px;
-*/
-  min-height: 83.7vh;
   margin-bottom: 60px;
 
+/*
+  min-height: 83.7vh;
+  margin-bottom: 60px;
+  */
 }
