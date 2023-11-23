@@ -82,6 +82,7 @@ describe("Dummy user to admin control panel", () => {
     cy.get('input[placeholder="Password"]').type("dummydude123");
     cy.get('input[placeholder="Retype Password"]').type("dummydude123");
     cy.contains("button", "Submit").should("be.visible").click();
+    cy.wait(1000);
     cy.contains("dummydude123@gmail.com").should("be.visible");
   });
   it("change dummy user role as admin", () => {

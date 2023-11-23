@@ -6,8 +6,12 @@
   background-color: lightblue;
   border: 1px solid black;
   border-radius: 5px;
+  /*
   margin-bottom: 105px;
-  max-width: 25%;
+  */
+  min-width: 200px;
+  height: fit-content;
+  margin-bottom: 2%;
 }
 .title {
   font-size: 20px;

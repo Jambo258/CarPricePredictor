@@ -6,7 +6,12 @@
   background-color: lightblue;
   border: 1px solid black;
   border-radius: 5px;
+  /*
   margin-bottom: 276px;
+  */
+  min-width: 200px;
+  height: fit-content;
+
 }
 .login-title {
     font-size: 20px;

@@ -56,7 +56,7 @@ const RegisterPage = () => {
   });
 
   return (
-    <Container className="form">
+    <Container className="form col-3">
       <Container className="mt-3 title">Registration Form</Container>
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group className="mt-3" controlId="formUsername">

@@ -210,7 +210,7 @@ const ProfileCard = (props) => {
         marginTop: "2%",
         border: "1px solid black",
         borderRadius: "5px",
-        marginBottom: "179px",
+        marginBottom: "2%",
         margin: "auto",
       }}
     >

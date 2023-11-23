@@ -8,12 +8,15 @@
   border-radius: 5px;
   min-width: 200px;
   max-width: 25%;
+  margin-bottom: 2%;
 }
 .predict-title {
   font-size: 20px;
 }
 .main-container {
+  /*
   min-height: 83.7vh;
+  */
   font-size: 30px;
   text-align: center;
 }
