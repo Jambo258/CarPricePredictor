@@ -10,6 +10,7 @@ import "./Home.css";
 import { useAuth } from "./Auth";
 import { useState } from "react";
 import Cars from "./file1.json";
+import CarImage from "./images/car.png"
 const Home = () => {
   const { token } = useAuth();
   const [prediction, setPrediction] = useState();
@@ -146,7 +147,7 @@ const Home = () => {
           <Image
             alt="Car"
             className="mt-3 rounded car-image"
-            src="../images/car.png"
+            src={CarImage}
           />
           <Container className="mt-3 predict-title">
             Car Price Predictor
