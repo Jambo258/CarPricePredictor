@@ -13,9 +13,9 @@ const RoutesComponent = () => {
   const { token, role, id } = useAuth();
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState();
-  console.log(token);
-  console.log(role);
-  console.log(id)
+  // console.log(token);
+  // console.log(role);
+  // console.log(id);
 
   useEffect(() => {
 
@@ -29,7 +29,7 @@ const RoutesComponent = () => {
             },
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         setUsers(response.data);
 
       } catch (error) {
@@ -46,7 +46,7 @@ const RoutesComponent = () => {
             },
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         setUser(response.data);
       } catch (error) {
         console.log(error);
@@ -65,10 +65,16 @@ const RoutesComponent = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       {token && role === "user" && (
-        <Route path="/profilepage" element={<ProfilePage user={user} setUser={setUser} />} />
+        <Route
+          path="/profilepage"
+          element={<ProfilePage user={user} setUser={setUser} />}
+        />
       )}
       {token && role === "admin" && (
-        <Route path="/adminpage" element={<AdminPage users={users} setUsers={setUsers}/>} />
+        <Route
+          path="/adminpage"
+          element={<AdminPage users={users} setUsers={setUsers} />}
+        />
       )}
       {!token && <Route path="/loginpage" element={<LoginPage />} />}
       {!token && <Route path="/registerpage" element={<RegisterPage />} />}
@@ -80,3 +86,4 @@ const RoutesComponent = () => {
 };
 
 export default RoutesComponent;
+

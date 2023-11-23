@@ -43,11 +43,11 @@ const RegisterPage = () => {
           `http://localhost:3001/user/register`,
           newUser
         );
-        console.log(response.data);
+        // console.log(response.data);
         formik.resetForm();
-        navigate("/");
-        console.log(values);
         setUserToken(response.data.token);
+        navigate("/");
+        // console.log(values);
       } catch (error) {
         console.log(error);
         formik.errors.retypePassword = error.response.data.error;
@@ -56,7 +56,7 @@ const RegisterPage = () => {
   });
 
   return (
-    <Container className="form col-3">
+    <Container className="form">
       <Container className="mt-3 title">Registration Form</Container>
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group className="mt-3" controlId="formUsername">

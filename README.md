@@ -59,6 +59,23 @@ in the ./server folder run following command:
 npm run tests
 ````
 
+E2E tests
+
+make sure all parts of the application is running either on terminals or docker container and after that navigate to ./client folder and run following command :
+
+````
+npm run cypress
+````
+which starts cypress program where you can run the tests
+
+or if you want to run tests without cypress interface
+
+````
+npm run cy:run
+````
+
+
+
 # Endpoints
 
 <div align="center">

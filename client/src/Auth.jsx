@@ -1,4 +1,3 @@
-// import axios from "axios";
 import { createContext, useEffect, useMemo, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useCallback } from "react";
@@ -14,7 +13,7 @@ const AuthProvider = ( {children} ) => {
 
   const setUserToken = useCallback ((newToken, exp) => {
     const decodedToken = jwtDecode(newToken);
-    console.log(decodedToken);
+    // console.log(decodedToken);
     setToken(newToken);
     setRole(decodedToken.role);
     setId(decodedToken.id);
@@ -23,7 +22,7 @@ const AuthProvider = ( {children} ) => {
     setTokenExpirationDate(tokenExpirationDate);
   }, []);
 
-  console.log(tokenExpirationDate)
+  // console.log(tokenExpirationDate)
   const removeUserToken =  useCallback(() => {
     setToken(null);
     setRole(null);
@@ -34,8 +33,8 @@ const AuthProvider = ( {children} ) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
      const exp = localStorage.getItem("exp");
-     console.log(token)
-     console.log(exp)
+     // console.log(token)
+     // console.log(exp)
     if (
       token  &&
        new Date(exp) > new Date()
@@ -51,14 +50,14 @@ const AuthProvider = ( {children} ) => {
   useEffect(() => {
     if (token && tokenExpirationDate) {
       const decodedToken = jwtDecode(token);
-      console.log(decodedToken)
+      // console.log(decodedToken)
       // axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       localStorage.setItem("token", token);
       localStorage.setItem("exp", new Date(decodedToken.exp * 1000));
       // console.log(tokenExpirationDate)
       const remainingTime =
         tokenExpirationDate - new Date().getTime();
-      console.log(remainingTime)
+      // console.log(remainingTime)
       logoutTimer = setTimeout(removeUserToken, remainingTime);
     } else {
       // delete axios.defaults.headers.common["Authorization"];

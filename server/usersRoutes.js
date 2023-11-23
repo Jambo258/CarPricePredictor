@@ -144,6 +144,9 @@ usersRouter.put(
         user.password = hashedPassword;
       }
       if (role) {
+        if (req.user.role != process.env.ADMIN_ROLE) {
+          return res.status(401).send({ error: "Cant change role unless admin" });
+        }
         user.role = role;
       }
       await updateUser(user);

@@ -19,6 +19,7 @@ const Home = () => {
   const [make, setMake] = useState("Select Manufactorer");
   const [model, setModel] = useState([]);
   const [selectedModel, setSelectedModel] = useState("Select Model");
+  const [filterText, setFilterText] = useState("");
   const fuelTypes = [
     "Diesel",
     "Gasoline",
@@ -33,9 +34,14 @@ const Home = () => {
   const gearTypes = ["Manual", "Automatic", "Semi-automatic"];
   const offerTypes = ["Used", "New"];
 
+  const filteredResults = filterText
+    ? manufactorers.filter((element) => element.startsWith(filterText))
+    : manufactorers;
+
   const handleMake = (item) => {
     setMake(item);
     setModel(Cars[item].model);
+    setFilterText("");
     formik.values.make = item;
   };
 
@@ -109,11 +115,11 @@ const Home = () => {
             },
           }
         );
-        console.log(response.data);
-        console.log(formik.values);
+        // console.log(response.data);
+        // console.log(formik.values);
         formik.resetForm();
-        console.log(formik.values)
-        console.log(values);
+        // console.log(formik.values)
+        // console.log(values);
         setFuelType("Select fuelType");
         setGearType("Select gearType");
         setOfferType("Select offerType");
@@ -132,20 +138,20 @@ const Home = () => {
       }
     },
   });
-  console.log(formik.values.model);
+  // console.log(formik.values.model);
   return (
     <>
       {token ? (
-        <Container className="predict-form col-3">
+        <Container className="predict-form">
           <Image
-            className="mt-3 rounded"
-            height="125px"
+            alt="Car"
+            className="mt-3 rounded car-image"
             src="../images/car.png"
           />
           <Container className="mt-3 predict-title">
             Car Price Predictor
           </Container>
-          <Form onSubmit={formik.handleSubmit}>
+          <Form className="w-100" onSubmit={formik.handleSubmit}>
             <Form.Group className="" controlId="formKilometer">
               <Form.Label>Enter Kilometer value</Form.Label>
               <Form.Control
@@ -159,18 +165,33 @@ const Home = () => {
                 <div className="errors">{formik.errors.kilometer}</div>
               ) : null}
             </Form.Group>
-            <Form.Group className="" controlId="formMake">
-              <Form.Label>Select manufactorer</Form.Label>
+            <Form.Group className="mb-3 mt-3" controlId="formMake">
               <Dropdown>
-                <Dropdown.Toggle variant="secondary">{make}</Dropdown.Toggle>
+                <Dropdown.Toggle
+                  className="dropdown-component"
+                  variant="secondary"
+                >
+                  {make}
+                </Dropdown.Toggle>
                 <Dropdown.Menu
                   style={{
                     maxHeight: "200px",
                     overflowY: "auto",
-                    width: "160px",
+                    width: "100%",
                   }}
                 >
-                  {manufactorers.map((item, index) => (
+                  <Form.Control
+                    type="text"
+                    placeholder="Manufactorer"
+                    value={filterText}
+                    onChange={(e) => {
+                      e.target.value =
+                        e.target.value.charAt(0).toUpperCase() +
+                        e.target.value.slice(1);
+                      setFilterText(e.target.value);
+                    }}
+                  />
+                  {filteredResults.map((item, index) => (
                     <Dropdown.Item key={index} onClick={() => handleMake(item)}>
                       {item}
                     </Dropdown.Item>
@@ -182,16 +203,18 @@ const Home = () => {
               ) : null}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formModel">
-              <Form.Label>Select Car model</Form.Label>
-
               <Dropdown>
-                <Dropdown.Toggle variant="secondary">
+                <Dropdown.Toggle
+                  className="dropdown-component"
+                  variant="secondary"
+                >
                   {selectedModel}
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   style={{
                     maxHeight: "200px",
                     overflowY: "auto",
+                    width: "100%",
                   }}
                 >
                   {model.map((item, index) => (
@@ -209,15 +232,18 @@ const Home = () => {
               ) : null}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formFuel">
-              <Form.Label>Select Fuel type</Form.Label>
               <Dropdown>
-                <Dropdown.Toggle variant="secondary">
+                <Dropdown.Toggle
+                  className="dropdown-component"
+                  variant="secondary"
+                >
                   {fuelType}
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   style={{
                     maxHeight: "200px",
                     overflowY: "auto",
+                    width: "100%",
                   }}
                 >
                   {fuelTypes.map((item, index) => (
@@ -235,15 +261,18 @@ const Home = () => {
               ) : null}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formGear">
-              <Form.Label>Select Transmission type</Form.Label>
               <Dropdown>
-                <Dropdown.Toggle variant="secondary">
+                <Dropdown.Toggle
+                  className="dropdown-component"
+                  variant="secondary"
+                >
                   {gearType}
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   style={{
                     maxHeight: "200px",
                     overflowY: "auto",
+                    width: "100%",
                   }}
                 >
                   {gearTypes.map((item, index) => (
@@ -261,15 +290,18 @@ const Home = () => {
               ) : null}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formOfferType">
-              <Form.Label>Select Offertype</Form.Label>
               <Dropdown>
-                <Dropdown.Toggle variant="secondary">
+                <Dropdown.Toggle
+                  className="dropdown-component"
+                  variant="secondary"
+                >
                   {offerType}
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   style={{
                     maxHeight: "200px",
                     overflowY: "auto",
+                    width: "100%",
                   }}
                 >
                   {offerTypes.map((item, index) => (

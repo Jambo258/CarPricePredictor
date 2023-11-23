@@ -4,10 +4,8 @@ import * as Yup from "yup";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
-// import { useContext } from "react";
 import axios from "axios";
 import "./LoginPage.css";
-// import { AuthContext } from "./Auth";
 import { useAuth } from "./Auth";
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -38,14 +36,17 @@ const LoginPage = () => {
           `http://localhost:3001/user/login`,
           loginUser
         );
-        console.log(response.data);
+        // console.log(response.data);
         formik.resetForm();
+        setUserToken(response.data.token);
         navigate("/");
-        console.log(values);
-        setUserToken(response.data.token)
+        // console.log(values);
       } catch (error) {
-        console.log(error.response.data.error);
+        // console.log(error.response.data.error);
         formik.errors.password = error.response.data.error;
+        if(error.response.data.errors != undefined){
+          formik.errors.password = error.response.data.errors[0].msg;
+        }
         console.log(error);
       }
     },

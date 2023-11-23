@@ -56,6 +56,7 @@ const ModalComponent = (props) => {
           </Button>
           <Button
             variant="danger"
+            data-testid="confirm-delete"
             onClick={() => {
               handleClose();
               handleDelete();

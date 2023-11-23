@@ -10,12 +10,47 @@ import Form from "react-bootstrap/Form";
 import ModalComponent from "./ModalComponent";
 import axios from "axios";
 import { useAuth } from "./Auth";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const ProfileCard = (props) => {
   const [username, setUsername] = useState(false);
   const [email, setEmail] = useState(false);
   const [password, setPassword] = useState(false);
+  const [Role, setRole] = useState(props.user.role);
   const { token, role } = useAuth();
+
+  const roles = ["admin", "user"];
+
+  const HandleRole = async (item) => {
+    setRole(item);
+    const userRole = {
+      role: item
+    }
+    try {
+        const response = await axios.put(
+          `http://localhost:3001/user/${props.user.id}`,
+          userRole,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        // console.log(response.data);
+        if (role === "admin") {
+          props.setUsers((prev) =>
+            prev.map((element) => {
+              if (element.id === props.user.id) {
+                return { ...element, role: response.data.role };
+              }
+              return element;
+            })
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+  }
 
   const validationSchemaUsername = Yup.object().shape({
     username: Yup.string().required("Username is required"),
@@ -55,10 +90,10 @@ const ProfileCard = (props) => {
             },
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         formikUsername.resetForm();
         setUsername(false);
-        console.log(values);
+        // console.log(values);
         if (role === "admin") {
           props.setUsers((prev) =>
             prev.map((element) => {
@@ -98,10 +133,10 @@ const ProfileCard = (props) => {
             },
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         formikEmail.resetForm();
         setEmail(false);
-        console.log(values);
+        // console.log(values);
         if (role === "admin") {
           props.setUsers((prev) =>
             prev.map((element) => {
@@ -143,10 +178,10 @@ const ProfileCard = (props) => {
             },
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         formikPassword.resetForm();
         setPassword(false);
-        console.log(values);
+        // console.log(values);
         if (role === "admin") {
           props.setUsers((prev) =>
             prev.map((element) => {
@@ -176,6 +211,7 @@ const ProfileCard = (props) => {
         border: "1px solid black",
         borderRadius: "5px",
         marginBottom: "179px",
+        margin: "auto",
       }}
     >
       <Card.Body>
@@ -190,6 +226,7 @@ const ProfileCard = (props) => {
         <ListGroup className="list-group list-group-profile">
           <ListGroup.Item>
             <Button
+              className="w-100"
               variant="primary"
               onClick={() => {
                 setUsername(!username);
@@ -241,6 +278,7 @@ const ProfileCard = (props) => {
           <ListGroup.Item>
             <Button
               variant="primary"
+              className="w-100"
               onClick={() => {
                 setEmail(!email);
                 setUsername(false);
@@ -290,6 +328,7 @@ const ProfileCard = (props) => {
           <ListGroup.Item>
             <Button
               variant="primary"
+              className="w-100"
               onClick={() => {
                 setPassword(!password);
                 setUsername(false);
@@ -353,6 +392,27 @@ const ProfileCard = (props) => {
               </Form>
             ) : null}
           </ListGroup.Item>
+          {role && role === "admin" ? (
+            <ListGroup.Item>
+              <Container>Change role</Container>
+              <Dropdown>
+                <Dropdown.Toggle className="w-100" variant="primary">
+                  {Role}
+                </Dropdown.Toggle>
+                <Dropdown.Menu
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  {roles.map((item, index) => (
+                    <Dropdown.Item key={index} onClick={() => HandleRole(item)}>
+                      {item}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </ListGroup.Item>
+          ) : null}
         </ListGroup>
       </Card.Body>
     </Card>

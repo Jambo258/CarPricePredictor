@@ -6,9 +6,11 @@
   background-color: lightblue;
   border: 1px solid black;
   border-radius: 5px;
+  min-width: 200px;
+  max-width: 25%;
 }
 .predict-title {
-    font-size: 20px;
+  font-size: 20px;
 }
 .main-container {
   min-height: 83.7vh;
@@ -17,4 +19,11 @@
 }
 .prediction {
   font-size: 20px;
+}
+.car-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+.dropdown-component {
+  min-width: 100%;
 }
