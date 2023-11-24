@@ -27,6 +27,8 @@ backend-test-job:
     POSTGRES_USER: pguser
     POSTGRES_PASSWORD: pgpass
     POSTGRES_DB: postgres
+    PG_HOST: postgres
+    PG_PORT: 5432
   stage: test
   script:
     - cd server
