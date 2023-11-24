@@ -11,21 +11,27 @@ lint-client-job:
     - npm install
     - npm run lint
 
-#lint-server-job:
-#  image: node:18-alpine
-#  stage: lint
-#  script:
-#    - cd server
-#    - npm install
-#    - cd src
-#    - eslint .
+lint-server-job:
+  image: node:18-alpine
+  stage: lint
+  script:
+    - cd server
+    - npm install
+    - npm run lint
 
-unit-test-job:
+backend-test-job:
+  image: node:18-alpine
+  services:
+    - postgres:15.2
+  variables:
+    POSTGRES_USER: pguser
+    POSTGRES_PASSWORD: pgpass
+    POSTGRES_DB: postgres
   stage: test
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - cd server
+    - npm install
+    - npm run tests
 
 lint-test-job:
   stage: test
