@@ -9,8 +9,7 @@ lint-client-job:
   script:
     - cd client
     - npm install
-    - cd src
-    - eslint .
+    - npm run lint
 
 #lint-server-job:
 #  image: node:18-alpine
