@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -r dotenv/config index.js",
-    "tests": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --detectOpenHandles --forceExit"
+    "tests": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --detectOpenHandles --forceExit",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "jest": {
     "testEnvironment": "node"
@@ -29,7 +30,9 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "eslint": "^8.54.0",
+    "eslint-plugin-jest": "^27.6.0",
+    "nodemon": "^3.0.1"
   }
 }
