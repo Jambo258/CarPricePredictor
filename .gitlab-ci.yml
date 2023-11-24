@@ -51,11 +51,7 @@ backend-test-job:
     - docker-compose up -d
     - sleep 30
     - cd server
-    - echo $PATH
-    - cp -R client "${PATH}/client"
-    - cp -R server "${PATH}/server"
-    #- npm run tests
-    - docker-compose run server npm run tests
+    - docker-compose run npm run tests
 
   after_script:
   - docker-compose down
