@@ -52,7 +52,8 @@ backend-test-job:
     - docker-compose -f $DOCKER_COMPOSE_FILE up -d
     - sleep 30
   script:
-    - docker-compose -f $DOCKER_COMPOSE_FILE run api npm run tests
+    - docker-compose -f $DOCKER_COMPOSE_FILE run api npm run tests:coverage
+  coverage: /All\sfiles.*?\s+(\d+.\d+)/
 
   after_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE down
