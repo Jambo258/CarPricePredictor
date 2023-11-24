@@ -19,10 +19,27 @@ lint-server-job:
     - npm install
     - npm run lint
 
+#backend-test-job:
+#  image: node:18-alpine
+#  services:
+#    - postgres:15.2
+#  variables:
+#    POSTGRES_USER: pguser
+#    POSTGRES_PASSWORD: pgpass
+#    POSTGRES_DB: postgres
+#    PG_HOST: postgres
+#    PG_PORT: 5432
+#  stage: test
+#  script:
+#    - cd server
+#    - npm install
+#    - sleep 15
+#    - npm run tests
+
 backend-test-job:
-  image: node:18-alpine
+  image: docker:latest
   services:
-    - postgres:15.2
+    - docker:dind
   variables:
     POSTGRES_USER: pguser
     POSTGRES_PASSWORD: pgpass
@@ -31,10 +48,13 @@ backend-test-job:
     PG_PORT: 5432
   stage: test
   script:
+    - docker compose up -d
+    - sleep 30
     - cd server
-    - npm install
-    - sleep 15
     - npm run tests
+
+  after_script:
+  - docker-compose down
 
 lint-test-job:
   stage: test
