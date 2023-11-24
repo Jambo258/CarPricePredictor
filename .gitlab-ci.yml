@@ -33,6 +33,7 @@ backend-test-job:
   script:
     - cd server
     - npm install
+    - sleep 15
     - npm run tests
 
 lint-test-job:
