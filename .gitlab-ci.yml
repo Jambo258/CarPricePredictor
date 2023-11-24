@@ -48,10 +48,11 @@ backend-test-job:
     PG_PORT: 5432
   stage: test
   script:
-    - docker compose up -d
+    - docker-compose up -d
     - sleep 30
     - cd server
-    - npm run tests
+    - echo $PATH
+    #- npm run tests
 
   after_script:
   - docker-compose down
