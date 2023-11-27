@@ -53,9 +53,12 @@ cypress-test-job:
     PG_HOST: postgres
     PG_PORT: 5432
   stage: test
+  dependencies:
+    - cypress-setup-job
   
   script:
-    - npm ci
+    - npm install
+    - apk add --no-cache docker-compose
     - npm run cy:run
 
   after_script:
