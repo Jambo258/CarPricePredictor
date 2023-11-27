@@ -60,7 +60,8 @@ cypress-test-job:
     #- apt-get install -y docker-compose
     - cd client
     - npm install
-    - npm run cy:run:docker
+    - export BASE_URL=$CI_ENVIRONMENT_URL
+    - npm run cy:run
 
   #after_script:
   #  - cd ..
