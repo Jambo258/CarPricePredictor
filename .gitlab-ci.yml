@@ -55,12 +55,12 @@ cypress-test-job:
   stage: test
   dependencies:
     - cypress-setup-job
-  
+
   script:
     #- apt-get install -y docker-compose
     - cd client
     - npm install
-    - npm run cy:run
+    - npm run cy:run:docker
 
   #after_script:
   #  - cd ..

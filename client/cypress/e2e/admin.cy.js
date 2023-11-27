@@ -1,4 +1,7 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
+
+const baseUrl = Cypress.env("BASE_URL") || "http://localhost:5173";
+
 describe("Dummy user to admin control panel", () => {
   it("Register dummy user for admin to delete", () => {
     cy.visit("/registerpage");
@@ -7,7 +10,7 @@ describe("Dummy user to admin control panel", () => {
     cy.get('input[placeholder="Password"]').type("password");
     cy.get('input[placeholder="Retype Password"').type("password");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.contains("Logout").should("be.visible");
   });
   });
@@ -17,7 +20,7 @@ describe("Dummy user to admin control panel", () => {
       cy.get('input[placeholder="Email"]').type("admin@admin.com");
       cy.get('input[placeholder="Password"]').type("admin");
       cy.get('button[type="submit"]').click();
-      cy.url().should("eq", Cypress.config().baseUrl + "/");
+      cy.url().should("eq", baseUrl + "/");
       cy.contains("Logout").should("be.visible");
       cy.wait(1000);
     });
@@ -122,7 +125,7 @@ describe("Admin tests as new admin & delete dummy user", () => {
     cy.get('input[placeholder="Email"]').type("admin@admin.com");
     cy.get('input[placeholder="Password"]').type("admin");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.contains("Logout").should("be.visible");
     cy.wait(1000);
     cy.get('a[href="/adminpage"]').click();

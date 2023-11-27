@@ -1,16 +1,19 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
+
+const baseUrl = Cypress.env("BASE_URL") || "http://localhost:5173";
+
 describe("Car price predictor tests", () => {
   beforeEach(() => {
     cy.visit("/loginpage");
     cy.get('input[placeholder="Email"]').type("admin@admin.com");
     cy.get('input[placeholder="Password"]').type("admin");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.contains("Logout").should("be.visible");
     cy.wait(1000);
   });
   it("Try to submit Invalid values on the car price predictor form", () => {
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.contains("button", "Submit").click();
     cy.contains("Manufactorer is required").should("be.visible");
     cy.contains("Model is required").should("be.visible");
@@ -21,7 +24,7 @@ describe("Car price predictor tests", () => {
   });
 
   it("Try to submit false values on the car price predictor form", () => {
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.get('input[placeholder="Kilometer"]').clear();
     cy.get('input[placeholder="Kilometer"]').type("-100");
     cy.get('input[placeholder="Horsepower"]').clear();
@@ -35,7 +38,7 @@ describe("Car price predictor tests", () => {
     cy.wait(1000);
   });
   it("Try to submit empty fields on the car price predictor form", () => {
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.get('input[placeholder="Kilometer"]').clear();
     cy.get('input[placeholder="Horsepower"]').clear();
     cy.get('input[placeholder="Year"]').clear();
@@ -46,7 +49,7 @@ describe("Car price predictor tests", () => {
     cy.wait(1000);
   });
   it("Succeesfull prediction", () => {
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.get('input[placeholder="Kilometer"]').clear();
     cy.get('input[placeholder="Kilometer"]').type("100000");
     cy.get(".predict-form")

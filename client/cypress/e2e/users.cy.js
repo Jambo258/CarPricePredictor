@@ -1,8 +1,11 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
+
+const baseUrl = Cypress.env("BASE_URL") || "http://localhost:5173";
+
 describe("User routes tests", () => {
   it("Navigate to registrationpage on navbar", () => {
     cy.visit("/");
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.get('a[href="/registerpage"]').click();
     cy.url().should("include", "/registerpage");
   });
@@ -35,12 +38,12 @@ describe("User routes tests", () => {
     cy.get('input[placeholder="Password"]').type("password");
     cy.get('input[placeholder="Retype Password"').type("password");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.contains("Logout").should("be.visible");
   });
   it("Navigate to loginpage on navbar", () => {
     cy.visit("/");
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.get('a[href="/loginpage"]').click();
     cy.url().should("include", "/loginpage");
   });
@@ -67,7 +70,7 @@ describe("User routes tests", () => {
     cy.get('input[placeholder="Email"]').type("testguy@gmail.com");
     cy.get('input[placeholder="Password"]').type("password");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.contains("Logout").should("be.visible");
   });
 });
@@ -166,7 +169,7 @@ describe("Logged in user tests after changing password and email", () => {
     cy.get('input[placeholder="Email"]').type("newusername@gmail.com");
     cy.get('input[placeholder="Password"]').type("password1");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.contains("Logout").should("be.visible");
     cy.wait(1000);
   });
@@ -177,7 +180,7 @@ describe("Logged in user tests after changing password and email", () => {
     cy.contains("Delete").click();
     cy.contains("User Deletion Verification").should("be.visible");
     cy.get('[data-testid="confirm-delete"]').click();
-    cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", baseUrl + "/");
     cy.contains("Login").should("be.visible");
     cy.contains("Register").should("be.visible");
     cy.wait(1000);
