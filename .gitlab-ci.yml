@@ -57,12 +57,13 @@ cypress-test-job:
     - cypress-setup-job
   
   script:
+    - apt-get install -y docker-compose
     - cd client
     - npm install
-    - apk add --no-cache docker-compose
     - npm run cy:run
 
   after_script:
+    - cd ..
     - docker-compose -f $DOCKER_COMPOSE_FILE down
 
 backend-test-job:
