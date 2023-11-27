@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "cypress": "cypress open",
     "cy:run": "cypress run",
-    "cy:run:docker": "cross-env CYPRESS_BASE_URL=http://client:5173 cypress run"
+    "cy:run:docker": "cross-env CYPRESS_BASE_URL=$BASE_URL cypress run"
   },
   "dependencies": {
     "axios": "^1.6.1",

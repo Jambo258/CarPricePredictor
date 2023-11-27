@@ -62,7 +62,8 @@ cypress-test-job:
     - npm install
     - export BASE_URL=$CI_ENVIRONMENT_URL
     #- npm run cy:run
-    - cross-env CYPRESS_BASE_URL=$BASE_URL cypress run
+    #- cross-env CYPRESS_BASE_URL=$BASE_URL cypress run
+    - npm run cy:run:docker
 
   #after_script:
   #  - cd ..
