@@ -40,7 +40,6 @@ cypress-setup-job:
   #  - npm ci
   #  - npm run cy:run
   script:
-    - apk update && apk add libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb
     - docker-compose -f $DOCKER_COMPOSE_FILE run client npm run cy:run
 
   after_script:

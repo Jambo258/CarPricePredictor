@@ -1,6 +1,6 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
 
-const baseUrl = Cypress.env("BASE_URL") || "http://localhost:5173";
+const baseUrl = Cypress.env("CYPRESS_BASE_URL") || "http://localhost:5173";
 
 describe("Dummy user to admin control panel", () => {
   it("Register dummy user for admin to delete", () => {

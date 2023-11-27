@@ -50,3 +50,14 @@ services:
       - 5173:5173
     depends_on:
       - api
+  cypress:
+    build:
+      content: ./client
+      dockerfile: cypress.Dockerfile
+    depends_on:
+      - client
+    environment:
+      - CYPRESS_BASE_URL=http://client:5173
+    working_dir: /e2e
+    volumes:
+      - ./:/e2e

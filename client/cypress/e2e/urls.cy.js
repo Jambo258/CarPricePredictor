@@ -1,4 +1,4 @@
-const baseUrl = Cypress.env("BASE_URL") || "http://localhost:5173";
+const baseUrl = Cypress.env("CYPRESS_BASE_URL") || "http://localhost:5173";
 
 describe("Routes tests", () => {
   it("Application default page /", () => {
