@@ -19,23 +19,6 @@ lint-server-job:
     - npm install
     - npm run lint
 
-#backend-test-job:
-#  image: node:18-alpine
-#  services:
-#    - postgres:15.2
-#  variables:
-#    POSTGRES_USER: pguser
-#    POSTGRES_PASSWORD: pgpass
-#    POSTGRES_DB: postgres
-#    PG_HOST: postgres
-#    PG_PORT: 5432
-#  stage: test
-#  script:
-#    - cd server
-#    - npm install
-#    - sleep 15
-#    - npm run tests
-
 backend-test-job:
   image: docker:latest
   services:
@@ -58,12 +41,27 @@ backend-test-job:
   after_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE down
 
-lint-test-job:
+cypress-test-job:
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_COMPOSE_FILE: ./docker-compose.yml
+    POSTGRES_USER: pguser
+    POSTGRES_PASSWORD: pgpass
+    POSTGRES_DB: postgres
+    PG_HOST: postgres
+    PG_PORT: 5432
   stage: test
+  before_script:
+    - docker-compose -f $DOCKER_COMPOSE_FILE up -d
+    - sleep 30
   script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+    - docker-compose -f $DOCKER_COMPOSE_FILE run client npm run cy:run
+  
+
+  after_script:
+    - docker-compose -f $DOCKER_COMPOSE_FILE down
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
