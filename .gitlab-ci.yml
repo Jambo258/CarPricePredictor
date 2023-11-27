@@ -42,8 +42,8 @@ backend-test-job:
     - docker-compose -f $DOCKER_COMPOSE_FILE down
 
 cypress-test-job:
-  #image: docker:latest
-  image: cypress/browsers:node14.16.0-chrome89-ff86
+  image: docker:latest
+  #image: cypress/browsers:node14.16.0-chrome89-ff86
   services:
     - docker:dind
   variables:
@@ -57,11 +57,12 @@ cypress-test-job:
   before_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE up -d
     - sleep 30
-  #script:
-  #  - docker-compose -f $DOCKER_COMPOSE_FILE run client npm run cy:run
+    - apk add --no-cache xvfb
   script:
-    - npm ci
-    - npm run cy:run
+    - docker-compose -f $DOCKER_COMPOSE_FILE run client npm run cy:run
+  #script:
+  #  - npm ci
+  #  - npm run cy:run
 
   after_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE down
