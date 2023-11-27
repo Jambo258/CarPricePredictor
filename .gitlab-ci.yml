@@ -33,37 +33,42 @@ cypress-setup-job:
     PG_HOST: postgres
     PG_PORT: 5432
   stage: setup
-  script:
+  before_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE up -d
     - sleep 30
   #script:
   #  - npm ci
   #  - npm run cy:run
-
-cypress-test-job:
-  #image: docker:latest
-  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
-  services:
-    - docker:dind
-  variables:
-    DOCKER_COMPOSE_FILE: ./docker-compose.yml
-    POSTGRES_USER: pguser
-    POSTGRES_PASSWORD: pgpass
-    POSTGRES_DB: postgres
-    PG_HOST: postgres
-    PG_PORT: 5432
-  stage: test
-  dependencies:
-    - cypress-setup-job
-
   script:
+    - docker-compose -f $DOCKER_COMPOSE_FILE run client npm run cy:run
+
+  after_script:
+    - docker-compose -f $DOCKER_COMPOSE_FILE down
+
+#cypress-test-job:
+  #image: docker:latest
+#  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
+#  services:
+#    - docker:dind
+#  variables:
+#    DOCKER_COMPOSE_FILE: ./docker-compose.yml
+#    POSTGRES_USER: pguser
+#    POSTGRES_PASSWORD: pgpass
+#    POSTGRES_DB: postgres
+#    PG_HOST: postgres
+#    PG_PORT: 5432
+#  stage: test
+#  dependencies:
+#    - cypress-setup-job
+
+#  script:
     #- apt-get install -y docker-compose
-    - cd client
-    - npm install
-    - export BASE_URL=$CI_ENVIRONMENT_URL
+#    - cd client
+#    - npm install
+#    - export BASE_URL=$CI_ENVIRONMENT_URL
     #- npm run cy:run
     #- cross-env CYPRESS_BASE_URL=$BASE_URL cypress run
-    - npm run cy:run:docker
+#    - npm run cy:run:docker
 
   #after_script:
   #  - cd ..
