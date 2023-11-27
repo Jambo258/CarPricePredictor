@@ -57,6 +57,7 @@ cypress-test-job:
     - cypress-setup-job
   
   script:
+    - cd client
     - npm install
     - apk add --no-cache docker-compose
     - npm run cy:run
