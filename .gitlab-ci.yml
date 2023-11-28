@@ -32,6 +32,7 @@ cypress-setup-job:
     POSTGRES_DB: postgres
     PG_HOST: postgres
     PG_PORT: 5432
+    VITE_BACKEND_URL: http://api:3001
   stage: setup
   before_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE up -d
