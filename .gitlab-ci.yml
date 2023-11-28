@@ -40,7 +40,7 @@ cypress-setup-job:
   #  - npm ci
   #  - npm run cy:run
   script:
-    - docker-compose -f $DOCKER_COMPOSE_FILE run client npm run cy:run
+    - docker-compose -f $DOCKER_COMPOSE_FILE run e2e npx cypress run
 
   after_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE down

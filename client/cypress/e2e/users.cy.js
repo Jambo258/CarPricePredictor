@@ -1,11 +1,10 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
 
-const baseUrl = Cypress.env("CYPRESS_BASE_URL") || "http://localhost:5173";
-
 describe("User routes tests", () => {
   it("Navigate to registrationpage on navbar", () => {
     cy.visit("/");
-    cy.url().should("eq", baseUrl + "/");
+    // cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", Cypress.env("CYPRESS_baseUrl") + "/");
     cy.get('a[href="/registerpage"]').click();
     cy.url().should("include", "/registerpage");
   });
@@ -16,6 +15,7 @@ describe("User routes tests", () => {
     cy.get('input[placeholder="Password"]').type("testinguser");
     cy.get('input[placeholder="Retype Password"').type("testinguser");
     cy.get('button[type="submit"]').click();
+    cy.wait(1000);
     cy.contains("Email exists").should("be.visible");
     cy.wait(1000);
   });
@@ -27,6 +27,7 @@ describe("User routes tests", () => {
     cy.get('input[placeholder="Retype Password"').type("password1");
     cy.get('input[placeholder="Retype Password"').blur();
     cy.get('button[type="submit"]').click();
+    cy.wait(1000);
     cy.contains("Invalid email form").should("be.visible");
     cy.contains("Passwords must match").should("be.visible");
     cy.wait(1000);
@@ -38,12 +39,15 @@ describe("User routes tests", () => {
     cy.get('input[placeholder="Password"]').type("password");
     cy.get('input[placeholder="Retype Password"').type("password");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", baseUrl + "/");
+    cy.wait(1000);
+    // cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", Cypress.env("CYPRESS_baseUrl") + "/");
     cy.contains("Logout").should("be.visible");
   });
   it("Navigate to loginpage on navbar", () => {
     cy.visit("/");
-    cy.url().should("eq", baseUrl + "/");
+    // cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", Cypress.env("CYPRESS_baseUrl") + "/");
     cy.get('a[href="/loginpage"]').click();
     cy.url().should("include", "/loginpage");
   });
@@ -53,6 +57,7 @@ describe("User routes tests", () => {
     cy.get('input[placeholder="Password"]').type("pass");
     cy.get('input[placeholder="Password"').blur();
     cy.get('button[type="submit"]').click();
+    cy.wait(1000);
     cy.contains("Password must be at least 5 characters").should("be.visible");
     cy.contains("Invalid email form").should("be.visible");
     cy.wait(1000);
@@ -62,6 +67,7 @@ describe("User routes tests", () => {
     cy.get('input[placeholder="Email"]').type("testguy123@gmail.com");
     cy.get('input[placeholder="Password"]').type("password");
     cy.get('button[type="submit"]').click();
+    cy.wait(1000);
     cy.contains("Couldnt find user").should("be.visible");
     cy.wait(1000);
   });
@@ -70,7 +76,9 @@ describe("User routes tests", () => {
     cy.get('input[placeholder="Email"]').type("testguy@gmail.com");
     cy.get('input[placeholder="Password"]').type("password");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", baseUrl + "/");
+    cy.wait(1000);
+    // cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", Cypress.env("CYPRESS_baseUrl") + "/");
     cy.contains("Logout").should("be.visible");
   });
 });
@@ -81,6 +89,7 @@ describe("Tests when user is logged in", () => {
     cy.get('input[placeholder="Email"]').type("testguy@gmail.com");
     cy.get('input[placeholder="Password"]').type("password");
     cy.get('button[type="submit"]').click();
+    cy.wait(1000);
     cy.contains("Logout").should("be.visible");
     cy.wait(1000);
   });
@@ -91,6 +100,7 @@ describe("Tests when user is logged in", () => {
     cy.contains("Change username").click();
     cy.get('input[placeholder="Username"]').clear();
     cy.contains("button", "Submit").click();
+    cy.wait(1000);
     cy.contains("Username is required").should("be.visible");
     cy.wait(1000);
   });
@@ -102,6 +112,7 @@ describe("Tests when user is logged in", () => {
     cy.get('input[placeholder="Password"]').clear();
     cy.get('input[placeholder="Retype Password"]').clear();
     cy.contains("button", "Submit").click();
+    cy.wait(1000);
     cy.contains("Password is required").should("be.visible");
     cy.contains("Retype Password is required").should("be.visible");
     cy.wait(1000);
@@ -114,6 +125,7 @@ describe("Tests when user is logged in", () => {
     cy.get('input[placeholder="Password"]').type("password1");
     cy.get('input[placeholder="Retype Password"]').type("password2");
     cy.contains("button", "Submit").should("be.visible").click();
+    cy.wait(1000);
     cy.contains("Passwords must match").should("be.visible");
     cy.wait(1000);
   });
@@ -124,6 +136,7 @@ describe("Tests when user is logged in", () => {
     cy.contains("Change Email").click();
     cy.get('input[placeholder="Email"]').clear();
     cy.contains("button", "Submit").should('be.visible').click();
+    cy.wait(1000);
     cy.contains("Email is required").should("be.visible");
     cy.wait(1000);
   });
@@ -144,6 +157,7 @@ describe("Tests when user is logged in", () => {
     cy.get('input[placeholder="Username"]').clear();
     cy.get('input[placeholder="Username"]').type("newusername");
     cy.contains("button", "Submit").click();
+    cy.wait(1000);
     cy.contains("newusername").should("exist");
     cy.wait(1000);
   });
@@ -155,9 +169,11 @@ describe("Tests when user is logged in", () => {
     cy.get('input[placeholder="Password"]').type("password1");
     cy.get('input[placeholder="Retype Password"]').type("password1");
     cy.contains("button", "Submit").should('be.visible').click();
+    cy.wait(1000);
     cy.contains("Change Email").click();
     cy.get('input[placeholder="Email"]').type("newusername@gmail.com");
     cy.contains("button", "Submit").should('be.visible').click();
+    cy.wait(1000);
     cy.contains("newusername@gmail.com").should("exist");
     cy.wait(1000);
   });
@@ -169,7 +185,9 @@ describe("Logged in user tests after changing password and email", () => {
     cy.get('input[placeholder="Email"]').type("newusername@gmail.com");
     cy.get('input[placeholder="Password"]').type("password1");
     cy.get('button[type="submit"]').click();
-    cy.url().should("eq", baseUrl + "/");
+    cy.wait(1000);
+    // cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", Cypress.env("CYPRESS_baseUrl") + "/");
     cy.contains("Logout").should("be.visible");
     cy.wait(1000);
   });
@@ -180,7 +198,9 @@ describe("Logged in user tests after changing password and email", () => {
     cy.contains("Delete").click();
     cy.contains("User Deletion Verification").should("be.visible");
     cy.get('[data-testid="confirm-delete"]').click();
-    cy.url().should("eq", baseUrl + "/");
+    cy.wait(1000);
+    // cy.url().should("eq", Cypress.config().baseUrl + "/");
+    cy.url().should("eq", Cypress.env("CYPRESS_baseUrl") + "/");
     cy.contains("Login").should("be.visible");
     cy.contains("Register").should("be.visible");
     cy.wait(1000);

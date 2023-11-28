@@ -48,16 +48,19 @@ services:
     restart: always
     ports:
       - 5173:5173
+    #environment:
+    #  VITE_BACKEND_URL: http://localhost:3001
     depends_on:
       - api
-  cypress:
+  e2e:
+    image: cypress
     build:
-      content: ./client
+      context: ./client
       dockerfile: cypress.Dockerfile
+    container_name: cypress
     depends_on:
+      - api
       - client
     environment:
-      - CYPRESS_BASE_URL=http://client:5173
-    working_dir: /e2e
-    volumes:
-      - ./:/e2e
+      CYPRESS_baseUrl: http://client:5173
+    #command: npx cypress run
