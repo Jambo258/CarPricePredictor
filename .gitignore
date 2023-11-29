@@ -3,3 +3,5 @@
 /.vscode
 /server/coverage
 /client/cypress/screenshots
+/client/.nyc_output
+/client/coverage
