@@ -22,7 +22,7 @@ lint-server-job:
 
 cypress-setup-job:
   image: docker:latest
-  #image: cypress/browsers:node14.16.0-chrome89-ff86
+
   services:
     - docker:dind
   variables:
@@ -37,44 +37,13 @@ cypress-setup-job:
   before_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE up -d
     - sleep 30
-  #script:
-  #  - npm ci
-  #  - npm run cy:run
+
   script:
-    #- docker-compose -f $DOCKER_COMPOSE_FILE run e2e npx cypress run
     - docker-compose -f $DOCKER_COMPOSE_FILE run e2e npm run cy:run:pipe
+  coverage: /Statements\s+:\s(\d+.?\d+)%/
 
   after_script:
     - docker-compose -f $DOCKER_COMPOSE_FILE down
-
-#cypress-test-job:
-  #image: docker:latest
-#  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
-#  services:
-#    - docker:dind
-#  variables:
-#    DOCKER_COMPOSE_FILE: ./docker-compose.yml
-#    POSTGRES_USER: pguser
-#    POSTGRES_PASSWORD: pgpass
-#    POSTGRES_DB: postgres
-#    PG_HOST: postgres
-#    PG_PORT: 5432
-#  stage: test
-#  dependencies:
-#    - cypress-setup-job
-
-#  script:
-    #- apt-get install -y docker-compose
-#    - cd client
-#    - npm install
-#    - export BASE_URL=$CI_ENVIRONMENT_URL
-    #- npm run cy:run
-    #- cross-env CYPRESS_BASE_URL=$BASE_URL cypress run
-#    - npm run cy:run:docker
-
-  #after_script:
-  #  - cd ..
-  #  - docker-compose -f $DOCKER_COMPOSE_FILE down
 
 backend-test-job:
   image: docker:latest
