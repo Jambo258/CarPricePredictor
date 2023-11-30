@@ -68,13 +68,35 @@ npm run cypress
 ````
 which starts cypress program where you can run the tests
 
-or if you want to run tests without cypress interface
+or if you want to run tests without cypress interface (headless browser)
 
 ````
 npm run cy:run
 ````
 
+Code coverage reports can be found in ./client/coverage/lcov-report/index.html and in ./server/coverage/lcov-report/index.html
+(Assuming you have ran command ./server
 
+````
+npm run tests:coverage
+````
+and in ./client
+
+````
+npm run cy:run
+````
+)
+
+# Deployment
+
+Car price predictor is deployed to render.com where is hosted entire application (frontend, backend, db)
+
+Link to project: https://car-project-front.onrender.com/
+
+# Known issues
+
+If trying to run cypress tests in headless mode (command npm run cy:run) when entire application is ran in docker the result
+coverage report pathing is wrong inside the ./client/coverage/lcov-report/index.html but if application is run with only database in docker it works fine.
 
 # Endpoints
 

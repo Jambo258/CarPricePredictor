@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "cypress": "cross-env CYPRESS_baseUrl=http://localhost:5173 CYPRESS_coverage=false cypress open",
-    "cy:run": "cross-env CYPRESS_baseUrl=http://localhost:5173 CYPRESS_coverage=true cypress run && npx nyc report --reporter=text-summary",
+    "cy:run": "cross-env CYPRESS_baseUrl=http://localhost:5173 CYPRESS_coverage=true cypress run && npx nyc report --reporter=text-summary --exclude-after-remap=false",
     "cy:run:pipe": "cross-env CYPRESS_coverage=true cypress run && npx nyc report --reporter=text-summary"
   },
   "dependencies": {
